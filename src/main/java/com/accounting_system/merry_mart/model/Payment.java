@@ -2,6 +2,7 @@ package com.accounting_system.merry_mart.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -11,8 +12,11 @@ import java.util.UUID;
 public class Payment {
 
     @Id
-    @GeneratedValue
-    private UUID paymentID;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "payment_id", updatable = false, nullable = false)
+    @JsonProperty("paymentId")
+    private UUID paymentId;
 
     private String status;
     private int invoiceNo;
@@ -28,11 +32,9 @@ public class Payment {
 
     private String userID;
 
-    // ✅ Default constructor (JPA requires it)
     public Payment() {
     }
 
-    // ✅ Constructor for creating objects manually
     public Payment(@JsonProperty("status") String status,
                    @JsonProperty("invoiceNo") int invoiceNo,
                    @JsonProperty("paymentDate") Date paymentDate,
@@ -49,9 +51,9 @@ public class Payment {
         this.userID = userID;
     }
 
-    // ✅ Getters
-    public UUID getPaymentID() {
-        return paymentID;
+
+    public UUID getPaymentId() {
+        return paymentId;
     }
 
     public String getStatus() {
@@ -82,7 +84,8 @@ public class Payment {
         return userID;
     }
 
-    // ✅ Setters (needed if you want updates)
+
+
     public void setStatus(String status) {
         this.status = status;
     }
